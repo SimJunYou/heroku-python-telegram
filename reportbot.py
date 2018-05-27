@@ -36,6 +36,8 @@ info = {'role': '', 'name': '', 'total': '', 'current': '', 'sick': '', 'status'
 ########################################
 
 def start(bot, update):
+    logger.info("User %s initiates report generation", update.message.from_user.first_name)
+    
     reply_keyboard = [['Continue']]
     update.message.reply_text(
         'Parade State Generator\n\n'
@@ -149,9 +151,9 @@ def getTimePeriod():
 #          REPORT GENERATION
 ########################################
 
-
-
 def generateReport(bot, update):
+    logger.info("User %s completed generation", update.message.from_user.first_name)
+    
     timePeriod = getTimePeriod()
     timeGroup = getTimeGroup()
 
@@ -163,7 +165,18 @@ def generateReport(bot, update):
         elif info["name"][-3:] == "(W)":
             info["role"] = "Wolf Division IC"
         else:
-            abort(bot, update)
+            abort(bot, update, "Unclear division name")
+            return False
+
+    for each in ("sick", "status", "notpresent", "add"):
+        if info[each] == "Nil":
+            pass
+        elif info[each].isnumeric():
+            for i in range(int(info[each])):
+                info[each] += "\n\n{}.".format(i+1)
+        else:
+            print(info[each], each)
+            abort(bot, update, "Non-numerical number of people for "+each)
             return False
             
     report = """Good {}, Sirs.\n
@@ -195,8 +208,13 @@ def cancel(bot, update):
 
     return ConversationHandler.END
 
-def abort(bot, update):
+def abort(bot, update, error):
+    user = update.message.from_user
+    logger.info("User %s caused an error!", user.first_name)
+    logger.info("Error: "+error)
+    
     update.message.reply_text("Abort! Your information is flawed, please revise what you sent.")
+    update.message.reply_text("Specific error: "+error)
     update.message.reply_text("Type anything to begin from entering your appointment again.")
    
 def error(bot, update):
