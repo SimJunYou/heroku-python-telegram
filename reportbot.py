@@ -131,16 +131,20 @@ def end(bot, update):
 #              COMMANDS
 ########################################
 
-from time import localtime, strftime
+from datetime import datetime
+from pytz import timezone
+DTG = "%d%H%MH %b %y"
+hour = "%H"
+singaporeTime = datetime.now(timezone("Asia/Singapore"))
 
 def getTimeGroup():
-    return strftime("%d%H%MH %b %y", localtime())
+    return singaporeTime.strftime(DTG)
 
 def getTimePeriod():
-    hour = int(strftime("%H", localtime()))
-    if hour < 11:
+    currentHour = int(singaporeTime.strftime(hour))
+    if currentHour < 11:
         return "morning"
-    elif hour < 18:
+    elif currentHour < 18:
         return "afternoon"
     else:
         return "evening"
