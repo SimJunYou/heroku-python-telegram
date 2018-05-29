@@ -1,19 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Simple Bot to reply to Telegram messages
-# This program is dedicated to the public domain under the CC0 license.
-"""
-This Bot uses the Updater class to handle the bot.
-First, a few callback functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-Usage:
-Example of a bot-user conversation using ConversationHandler.
-Send /start to initiate the conversation.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
+###
+### PUSH TEST FROM PC
+###
 
 import logging
 
@@ -36,7 +23,7 @@ info = {'role': '', 'name': '', 'total': '', 'current': '', 'sick': '', 'status'
 ########################################
 
 def start(bot, update):
-    logger.info("User %s initiates report generation", update.message.from_user.first_name)
+    logger.info("User %s initiates report generation PC push", update.message.from_user.first_name)
     
     reply_keyboard = [['Parade State'|'/pState'], ['Additional Movement'|'/aMovement']]
     update.message.reply_text(
