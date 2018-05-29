@@ -1,6 +1,6 @@
-#####
-# Push and deploy test from phone
-#####
+###
+### PUSH TEST FROM PHONE
+###
 
 import logging
 
@@ -23,7 +23,7 @@ info = {'role': '', 'name': '', 'total': '', 'current': '', 'sick': '', 'status'
 ########################################
 
 def start(bot, update):
-    logger.info("User %s initiates report generation", update.message.from_user.first_name)
+    logger.info("User %s initiates report generation Phone push", update.message.from_user.first_name)
     
     reply_keyboard = [['Parade State'|'/pState'], ['Additional Movement'|'/aMovement']]
     update.message.reply_text(
