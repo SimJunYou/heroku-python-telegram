@@ -1,1 +1,0 @@
-worker: python reportbot.py

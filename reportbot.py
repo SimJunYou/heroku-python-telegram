@@ -4,6 +4,8 @@
 #       shortcuts: initvars
 ########################################
 
+#phone push test 3
+
 import logging
 
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove, ParseMode)
