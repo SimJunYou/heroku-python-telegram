@@ -249,7 +249,8 @@ def aiNotPresent(bot, update):
         
         return END
     
-    logger.info("User %s has additional info for Not Present", update.message.from_user.first_name)
+    logger.info("User {} is adding {} for Parade State (Not Present)".format(update.message.from_user.first_name, update.message.text))
+
     reply_keyboard = [['Shore Leave', 'Outstation'], ['Other', 'End']]
 
     update.message.reply_text(
@@ -387,7 +388,7 @@ def AM_info(bot, update):
         
         return AM_END
     
-    logger.info("User %s is adding items for Additional Movement/Information", update.message.from_user.first_name)
+    logger.info("User {} is adding {} for Additional Movement/Information".format(update.message.from_user.first_name, update.message.text))
     reply_keyboard = [['QM Duties', 'Securing', 'Other'], ['Leaving', 'Reaching', 'End']]
 
     update.message.reply_text(
@@ -401,8 +402,9 @@ def AM_info(bot, update):
 
 def AM_end(bot, update):
     finalReport = generateAddMoveReport(bot, update)
-    print("generated")
     update.message.reply_text(finalReport)
+
+    logger.info("Add. Movement Report delivered", update.message.from_user.first_name)
     
     return ConversationHandler.END
 
