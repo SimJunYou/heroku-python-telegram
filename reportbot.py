@@ -17,7 +17,7 @@ bot.
 
 import logging
 
-from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
+from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove, ParseMode)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
 
@@ -38,12 +38,16 @@ info = {'role': '', 'name': '', 'total': '', 'current': '', 'sick': '', 'status'
 def start(bot, update):
     logger.info("User %s initiates report generation", update.message.from_user.first_name)
     
-    reply_keyboard = [['Continue']]
+    reply_keyboard = [['Parade State'|'/pState'], ['Additional Movement'|'/aMovement']]
     update.message.reply_text(
-        'Parade State Generator\n\n'
+        '*Report Generator*\n\n'
         'Send /cancel to stop generating.\n\n'
-        'Press continue',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+        'Press parade state or additional movement to to continue.',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+        parse_mode = ParseMode.MARKDOWN)
+
+def pState(bot, update):
+    logger.info("User %s selects Parade State generation")
     return ROLE
 
 def role(bot, update):
@@ -118,7 +122,7 @@ def end(bot, update):
     else:
         info['add'] = update.message.text
 
-    finalReport = generateReport(bot, update)
+    finalReport = generateParadeState(bot, update)
     if finalReport == False:
         return ROLE
     else:
@@ -155,12 +159,13 @@ def getTimePeriod():
 #          REPORT GENERATION
 ########################################
 
-def generateReport(bot, update):
+def generateParadeState(bot, update):
     logger.info("User %s completed generation", update.message.from_user.first_name)
     
     timePeriod = getTimePeriod()
     timeGroup = getTimeGroup()
 
+    # Checks for division name
     if info["role"] == "Div IC":
         if info["name"][-3:] == "(T)":
             info["role"] = "Tiger Division IC"
@@ -172,6 +177,7 @@ def generateReport(bot, update):
             abort(bot, update, "Unclear division name")
             return False
 
+    #Checks for valid number of people
     for each in ("sick", "status", "notpresent", "add"):
         if info[each] == "Nil":
             pass
@@ -182,7 +188,8 @@ def generateReport(bot, update):
             print(info[each], each)
             abort(bot, update, "Non-numerical number of people for "+each)
             return False
-            
+
+      #Parade state generation      
     report = """Good {}, Sirs.\n
 I am {}, {} of the 84th MIDS, 21st MDEC 1. The {} parade state for {} is as follows:\n
 Total strength: {}\n
@@ -240,9 +247,11 @@ def main():
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
-    # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+    dp.add_handler(CommandHandler("start", start))
+
+    # Add conversation handler for parade state
+    pState_handler = ConversationHandler(
+        entry_points=[CommandHandler('pState', pState)],
 
         states={
             ROLE: [MessageHandler(Filters.text, role)],
@@ -259,7 +268,7 @@ def main():
         fallbacks=[CommandHandler('cancel', cancel)]
     )
 
-    dp.add_handler(conv_handler)
+    dp.add_handler(pState_handler)
 
     # log all errors
     dp.add_error_handler(error)
