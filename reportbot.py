@@ -404,7 +404,7 @@ def AM_end(bot, update):
     finalReport = generateAddMoveReport(bot, update)
     update.message.reply_text(finalReport)
 
-    logger.info("Add. Movement Report delivered", update.message.from_user.first_name)
+    logger.info("Add. Movement Report delivered")
     
     return ConversationHandler.END
 
@@ -572,6 +572,7 @@ def main():
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
+    logger.info("Now running")
     
 
 if __name__ == '__main__':
