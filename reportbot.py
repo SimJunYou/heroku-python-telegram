@@ -25,13 +25,14 @@ info = {'role': '', 'name': '', 'total': '', 'current': '', 'sick': '', 'status'
 def start(bot, update):
     logger.info("User %s initiates report generation PC push", update.message.from_user.first_name)
     
-    reply_keyboard = [['Parade State'|'/pState'], ['Additional Movement'|'/aMovement']]
+    reply_keyboard = [['/ParadeState'], ['/AdditionalMovement']]
     update.message.reply_text(
         '*Report Generator*\n\n'
         'Send /cancel to stop generating.\n\n'
         'Press parade state or additional movement to to continue.',
         reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
         parse_mode = ParseMode.MARKDOWN)
+    
 
 def pState(bot, update):
     logger.info("User %s selects Parade State generation")
@@ -226,8 +227,6 @@ def error(bot, update):
 ########################################
 
 def main():
-    # Create the Updater and pass it your bot's token.
-    # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     updater = Updater("241346491:AAH09_cf9KfaFohGgXUo96ljvOeyqcD1k4o")
 
@@ -238,7 +237,7 @@ def main():
 
     # Add conversation handler for parade state
     pState_handler = ConversationHandler(
-        entry_points=[CommandHandler('pState', pState)],
+        entry_points=[CommandHandler('ParadeState', pState)],
 
         states={
             ROLE: [MessageHandler(Filters.text, role)],
