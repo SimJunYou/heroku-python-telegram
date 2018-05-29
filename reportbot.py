@@ -1,5 +1,5 @@
 ###
-### PUSH TEST FROM PC
+### PUSH TEST FROM PHONE
 ###
 
 import logging
@@ -23,7 +23,7 @@ info = {'role': '', 'name': '', 'total': '', 'current': '', 'sick': '', 'status'
 ########################################
 
 def start(bot, update):
-    logger.info("User %s initiates report generation PC push", update.message.from_user.first_name)
+    logger.info("User %s initiates report generation Phone push", update.message.from_user.first_name)
     
     reply_keyboard = [['/ParadeState'], ['/AdditionalMovement']]
     update.message.reply_text(
