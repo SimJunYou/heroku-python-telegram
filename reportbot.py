@@ -423,6 +423,7 @@ hour = "%H"
 singaporeTime = datetime.now(timezone("Asia/Singapore"))
 
 def getTimeGroup():
+	logger.info(singaporeTime.strftime(DTG))
     return singaporeTime.strftime(DTG)
 
 def getTimePeriod():
